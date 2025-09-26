@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: ai-quiz-budy
-        image: tysonbaretto/ai-budy/ai-quiz-budy:v5
+        image: tysonbaretto/ai-budy:v4
         ports:
         - containerPort: 8501
         env:
