@@ -54,8 +54,8 @@ pipeline{
                     git config user.name "tysonbarreto"
                     git config user.email "tysonbarretto1991@gmail.com"
                     git add manifests/deployment.yaml
-                    git commit -m "manifests/deployment.yaml updated image tag to ${IMAGE_TAG}"
-                    git push https://${GIT_USER}:${GIT_PASS}@github.com/tysonbarreto/Flask_App_ArgoCD_GithubActions.git HEAD:main
+                    git commit -m "manifests/deployment.yaml updated image tag to ${IMAGE_TAG}" || echo "No changes to commit"
+                    git push https://${GIT_USER}:${GIT_PASS}@github.com/tysonbarreto/AIOps_Groq_Quiz_Buddy.git HEAD:main
                     """
                 }
             }
