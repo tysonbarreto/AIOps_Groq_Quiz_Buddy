@@ -38,7 +38,7 @@ pipeline{
                 script {
                     echo "Pushing Image to DockerHub..."
                     sh '''
-                    sed -i "s|image: tysonbaretto/ai-budy/ai-quiz-budy:.*|image: tysonbaretto/ai-budy/ai-quiz-budy:${IMAGE_TAG}|" manifests/deployment.yaml
+                    sed -i "s|image: tysonbaretto/ai-quiz-budy:*|image: tysonbaretto/ai-quiz-budy:${IMAGE_TAG}|g" manifests/deployment.yaml
                     cat manifests/deployment.yaml
                     '''
                 }

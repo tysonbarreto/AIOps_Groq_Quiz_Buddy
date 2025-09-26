@@ -29,3 +29,6 @@ graph TD
     F --> G[Monitoring & AIOps Feedback]
 ```
 
+![GitOps](image.png)
+
+![AI Quiz Budy App](image-1.png)
