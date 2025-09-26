@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-quiz-budy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ai-quiz-budy
+  template:
+    metadata:
+      labels:
+        app: ai-quiz-budy
+    spec:
+      containers:
+      - name: ai-quiz-budy
+        image: tysonbaretto/ai-quiz-budy:latest
+        ports:
+        - containerPort: 8501
+        env:
+        - name: GROQ_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: groq_api_secret
+              key: GROQ_API_KEY
