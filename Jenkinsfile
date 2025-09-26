@@ -48,7 +48,7 @@ pipeline{
         stage("Commit the updated manifest deployment yaml file"){
             steps{
                 script{
-                    withCredentials([usernamePassword(credentialsId:"github-token", usernameVariable: "GIT_USER", passwordVariable: "GIT_PASS")])
+                    withCredentials([usernamePassword(credentialsId:"github-token", usernameVariable: "GIT_USER", passwordVariable: "GIT_PASS")]){
                     echo "Commiting the updated manifest..."
                     sh"""
                     git config user.name "tysonbarreto"
@@ -61,4 +61,5 @@ pipeline{
             }
         }
     }
+}
 }
