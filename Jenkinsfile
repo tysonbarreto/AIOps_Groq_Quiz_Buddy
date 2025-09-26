@@ -1,7 +1,7 @@
 pipeline{
     agent any
     environment{
-        DOCKER_HUB_REPO = "tysonbaretto/ai-quiz-budy"
+        DOCKER_HUB_REPO = "tysonbaretto/ai-budy"
         DOCKER_HUB_CREDENTIALS_ID = "dockerhub-token"
         IMAGE_TAG = "v${BUILD_NUMBER}"
     }
@@ -17,6 +17,7 @@ pipeline{
             steps{
                 script{
                     echo "Building Docker Image..."
+                    dockerImage = docker.build("${DOCKER_HUB_REPO}:${IMAGE_TAG}")
                 }
             }
         }
@@ -25,6 +26,9 @@ pipeline{
             steps{
                 script{
                     echo "Pushing Image to DockerHub..."
+                    docker.withRegistry("https://registry.hub.docker.com", "${DOCKER_HUB_CREDENTIALS_ID}"){
+                    dockerImage.push("${IMAGE_TAG}")
+                    }
                 }
             }
         }
@@ -33,6 +37,26 @@ pipeline{
             steps{
                 script{
                     echo "Pushing Image to DockerHub..."
+                    sh"""
+                    sed -i "s|image: tysonbaretto/ai-budy/ai-quiz-budy:*|image: tysonbaretto/ai-budy/ai-quiz-budy:${IMAGE_TAG}|g" manifests/deployment.yaml
+                    cat manifests/deployment.yaml
+                    """
+                }
+            }
+        }
+
+        stage("Commit the updated manifest deployment yaml file"){
+            steps{
+                script{
+                    withCredentials([usernamePassword(credentialsId:"github-token", usernameVariable: "GIT_USER", passwordVariable: "GIT_PASS")])
+                    echo "Commiting the updated manifest..."
+                    sh"""
+                    git config user.name "tysonbarreto"
+                    git config user.email "tysonbarretto1991@gmail.com"
+                    git add manifests/deployment.yaml
+                    git commit -m "manifests/deployment.yaml updated image tag to ${IMAGE_TAG}"
+                    git push https://${GIT_USER}:${GIT_PASS}@github.com/tysonbarreto/Flask_App_ArgoCD_GithubActions.git HEAD:main
+                    """
                 }
             }
         }
